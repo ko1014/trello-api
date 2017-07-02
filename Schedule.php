@@ -19,14 +19,14 @@ class Schedule
             foreach ($cards as $card) {
                 if (!empty($card)) {
                     $has_deadline = preg_match('/^(.+)T.+$/', $card['due'], $match);
-                    if ($has_deadline && $this->is_dead($match[1]) && in_array($list['name'], Define::$send_lists)) {
+                    if ($has_deadline && in_array($list['name'], Define::$send_lists) && $this->is_dead($match[1])) {
                         $result .= $this->parse_text($list['name'], $card['name'], $match[1]);
                     }
                 }
             }
         }
         return date('Y/m/d H:i:s'). "\n".
-            empty($result) ? "特に締め切りが近いタスクはありません" : $result;
+            (empty($result) ? "特に締め切りが近いタスクはありません" : $result);
     }
 
     private function parse_text(string $list_name, string $title, string $deadline): string
